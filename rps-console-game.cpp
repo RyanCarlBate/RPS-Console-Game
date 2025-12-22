@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <random>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -23,6 +24,11 @@ string choiceGenerator()
     return random_choice;
 }
 
+void clearScreen()
+{
+    cout << "\033[2J\033[H";
+}
+
 int main()
 {
     int choice;
@@ -37,10 +43,14 @@ int main()
             cin >> attack;
             if (attack == 'r' || attack == 'R' || attack == 'P' || attack == 'p' || attack == 'S' || attack == 's')
             {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin.clear();
                 break;
             }
             else
             {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                clearScreen();
                 cout << "You entered an invalid choice. Please enter again." << endl;
                 cin.clear();
             }
@@ -76,7 +86,7 @@ int main()
         }
         cout << "\nTry again?(1=yes/2=no): ";
         cin >> choice;
-        cin.ignore();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     } while (choice == 1);
 
     return 0;
