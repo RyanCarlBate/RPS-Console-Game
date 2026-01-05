@@ -62,11 +62,12 @@ int menuChoiceCheck()
 
 int main()
 {
+    int menuInput;
     int choice;
     char attack;
     string enemy;
     mainMenu();
-    menuChoiceCheck();
+    menuInput = menuChoiceCheck();
     do
     {
         enemy = choiceGenerator();
