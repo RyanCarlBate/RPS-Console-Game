@@ -3,17 +3,19 @@
 #include <random>
 #include <vector>
 #include <limits>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
 string choiceGenerator()
 {
     string random_choice;
-    // Declares a vector string variable named choices and define its values.
+    // Declares a vector string variable named choices and define its values. Vector was used to utilize the .size()
     vector <string> choices = {"rock", "paper", "scissor"};
     // Set up the random number generator
-    random_device generator;
-    mt19937 engine(generator()); 
+    random_device generator; // Seeder
+    mt19937 engine(generator()); // Mersenne Twister engine
     // Declares an object named rangeOfSelection that will produce unbiased, equally likely random integer values within a specific range.
     uniform_int_distribution <size_t> rangeOfSelection(0, choices.size() - 1);
     // Declares a size_t variable named random_index to hold an index value.
@@ -29,11 +31,42 @@ void clearScreen()
     cout << "\033[2J\033[H";
 }
 
+void mainMenu()
+{
+    cout << "Welcome to Rock-Paper-Scissor Game\n" << "1. Single-Player\n" << "2. Multiplayer\n" << "3. Exit\n" << "Insert your choice using number: ";
+}
+
+int menuChoiceCheck()
+{
+    int screenChoice;
+    while(true)
+    {
+        cin >> screenChoice;
+        if (screenChoice == 1 || screenChoice == 2 || screenChoice == 3)
+        {
+            break;
+        }
+        else
+        {
+            cout << "You insert wrong input. Please Try Again\n";
+            this_thread::sleep_for(chrono::milliseconds(500));
+            cout << "\033[2J\033[H";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Insert your choice using number: ";
+        }
+    }
+
+    return screenChoice;
+}
+
 int main()
 {
     int choice;
     char attack;
     string enemy;
+    mainMenu();
+    menuChoiceCheck();
     do
     {
         enemy = choiceGenerator();
