@@ -8,11 +8,11 @@
 
 using namespace std;
 
-string choiceGenerator()
+char choiceGenerator()
 {
-    string random_choice;
+    char random_choice;
     // Declares a vector string variable named choices and define its values. Vector was used to utilize the .size()
-    vector<string> choices = {"rock", "paper", "scissor"};
+    vector<char> choices = {'R', 'P', 'S'};
     // Set up the random number generator
     random_device generator;     // Seeder
     mt19937 engine(generator()); // Mersenne Twister engine
@@ -103,17 +103,97 @@ void showAttack(char attackInputResult)
     }
 }
 
+void showEnemyAttack(char attackInputResult)
+{
+    if (attackInputResult == 'r' || attackInputResult == 'R')
+    {
+        cout << "Enemy choice: Rock\n";
+    }
+    else if (attackInputResult == 'P' || attackInputResult == 'p')
+    {
+        cout << "Enemy choice: Paper\n";
+    }
+    else if (attackInputResult == 'S' || attackInputResult == 's')
+    {
+        cout << "Enemy choice: Scissor\n";
+    }
+}
+
 void defaultTimer()
 {
     this_thread::sleep_for(chrono::seconds(1));
+}
+
+void evaluateWinner(char enemy, char attack)
+{
+    if ((enemy == 'R' && attack == 'P') || (enemy == 'R' && attack == 'p'))
+    {
+        cout << "You win!" << endl;
+    }
+    else if ((enemy == 'P' && attack == 'S') || (enemy == 'P' && attack == 's'))
+    {
+        cout << "You win!" << endl;
+    }
+    else if ((enemy == 'S' && attack == 'R') || (enemy == 'S' && attack == 'r'))
+    {
+        cout << "You win!" << endl;
+    }
+    else if ((enemy == 'P' && attack == 'R') || (enemy == 'P' && attack == 'r'))
+    {
+        cout << "You lose!" << endl;
+    }
+    else if ((enemy == 'S' && attack == 'P') || (enemy == 'S' && attack == 'p'))
+    {
+        cout << "You lose!" << endl;
+    }
+    else if ((enemy == 'R' && attack == 'S') || (enemy == 'R' && attack == 's'))
+    {
+        cout << "You lose!" << endl;
+    }
+    else
+    {
+        cout << "Draw!" << endl;
+    }
+}
+
+void evaluateWinnerMultiplayer(char playerTwo, char playerOne)
+{
+    if ((playerTwo == 'R' && playerOne == 'P') || (playerTwo == 'r' && playerOne == 'p'))
+    {
+        cout << "Player 1 won!" << endl;
+    }
+    else if ((playerTwo == 'P' && playerOne == 'S') || (playerTwo == 'p' && playerOne == 's'))
+    {
+        cout << "Player 1 won!" << endl;
+    }
+    else if ((playerTwo == 'S' && playerOne == 'R') || (playerTwo == 's' && playerOne == 'r'))
+    {
+        cout << "Player 1 won!" << endl;
+    }
+    else if ((playerTwo == 'P' && playerOne == 'R') || (playerTwo == 'p' && playerOne == 'r'))
+    {
+        cout << "Player 2 won!" << endl;
+    }
+    else if ((playerTwo == 'S' && playerOne == 'P') || (playerTwo == 's' && playerOne == 'p'))
+    {
+        cout << "Player 2 won!" << endl;
+    }
+    else if ((playerTwo == 'R' && playerOne == 'S') || (playerTwo == 'r' && playerOne == 's'))
+    {
+        cout << "Player 2 won!" << endl;
+    }
+    else
+    {
+        cout << "Draw!" << endl;
+    }
 }
 
 int main()
 {
     int menuInput;
     int choice;
-    char attack;
-    string enemy;
+    char attack, playerOne, playerTwo;
+    char enemy;
     mainMenu();
     menuInput = menuChoiceCheck();
     if (menuInput == 1)
@@ -128,36 +208,9 @@ int main()
             attack = attackInputCheck();
             showAttack(attack);
             defaultTimer();
-            cout << "Enemy choice: " << enemy << endl;
+            showEnemyAttack(enemy);
             defaultTimer();
-            if ((enemy == "rock" && attack == 'P') || (enemy == "rock" && attack == 'p'))
-            {
-                cout << "You win!" << endl;
-            }
-            else if ((enemy == "paper" && attack == 'S') || (enemy == "paper" && attack == 's'))
-            {
-                cout << "You win!" << endl;
-            }
-            else if ((enemy == "scissor" && attack == 'R') || (enemy == "scissor" && attack == 'r'))
-            {
-                cout << "You win!" << endl;
-            }
-            else if ((enemy == "paper" && attack == 'R') || (enemy == "paper" && attack == 'r'))
-            {
-                cout << "You lose!" << endl;
-            }
-            else if ((enemy == "scissor" && attack == 'P') || (enemy == "scissor" && attack == 'p'))
-            {
-                cout << "You lose!" << endl;
-            }
-            else if ((enemy == "rock" && attack == 'S') || (enemy == "rock" && attack == 's'))
-            {
-                cout << "You lose!" << endl;
-            }
-            else
-            {
-                cout << "Draw!" << endl;
-            }
+            evaluateWinner(enemy, attack);
             cout << "\nTry again?(1=yes/2=no): ";
             cin >> choice;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -171,6 +224,20 @@ int main()
         this_thread::sleep_for(chrono::seconds(1));
         clearScreen();
         // Multiplayer will be added here later
+        do
+        {
+            cout << "Player 1 turn:" << endl;
+            playerOne = attackInputCheck();
+            clearScreen();
+            cout << "Player 2 turn:" << endl;
+            playerTwo = attackInputCheck();
+            clearScreen();
+            evaluateWinnerMultiplayer(playerTwo, playerOne);
+            cout << "\nTry again?(1=yes/2=no): ";
+            cin >> choice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            clearScreen();
+        } while (choice == 1);
     }
 
     return 0;
