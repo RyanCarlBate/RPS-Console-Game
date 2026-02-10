@@ -29,6 +29,7 @@ char choiceGenerator()
 void clearScreen()
 {
     cout << "\033[2J\033[H";
+    system("cls"); // Alternative way of clearing terminal screen.
 }
 
 void mainMenu()
